@@ -1,0 +1,7 @@
+@cats.map { |cat|
+  { id: cat.id,
+   name: cat.name,
+   age: cat.age,
+   size: cat.size,
+   breed: cat.breed }
+}
