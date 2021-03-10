@@ -9,5 +9,7 @@ Rails.application.routes.draw do
     get "/cats" => "cats#index"
     post "/cats" => "cats#create"
     get "/cats/:id" => "cats#show"
+    patch "/cats/:id" => "cats#update"
+    delete "/cats/:id" => "cats#destroy"
   end
 end
