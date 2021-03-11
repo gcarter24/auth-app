@@ -1,11 +1,9 @@
 class Api::CatsController < ApplicationController
+  before_action :authenticate_user
+
   def index
-    if current_user
-      @cats = Cat.order(:id => :asc)
-      render "index.json.jb"
-    else
-      render json: { error: "you must be logged in to perform this action" }
-    end
+    @cats = Cat.order(:id => :asc)
+    render "index.json.jb"
   end
 
   def create
@@ -15,20 +13,13 @@ class Api::CatsController < ApplicationController
       size: params[:size],
       breed: params[:breed],
     )
-    if current_user
-      @cat.save
-      render "show.json.jb"
-    elsif render json: { error: "you must be logged in to perform this action" }
-    end
+    @cat.save
+    render "show.json.jb"
   end
 
   def show
-    if current_user
-      @cat = Cat.find_by(id: params[:id])
-      render "show.json.jb"
-    else
-      render json: { error: "you must be logged in to do this action" }
-    end
+    @cat = Cat.find_by(id: params[:id])
+    render "show.json.jb"
   end
 
   def update
@@ -37,20 +28,13 @@ class Api::CatsController < ApplicationController
     @cat.age = params[:age] || @cat.age
     @cat.size = params[:size] || @cat.size
     @cat.breed = params[:breed] || @cat.breed
-    if @cat.save
-      render "show.json.jb"
-    else
-      render json: { errors: @cat.errors.full_messages }
-    end
+    @cat.save
+    render "show.json.jb"
   end
 
   def destroy
-    if current_user
-      @cat = Cat.find_by(id: params[:id])
-      @cat.destroy
-      render "show.json.jb"
-    else
-      render json: { error: "you must be logged in to do this action" }
-    end
+    @cat = Cat.find_by(id: params[:id])
+    @cat.destroy
+    render json: { message: "successfully deleted" }
   end
 end
